@@ -12,7 +12,7 @@ public class FinalScoreActivity extends AppCompatActivity {
     private TextView scoreTextView;
     private Button takeNewQuizButton;
     private Button finishButton;
-    private String userName;
+    private String name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,14 +21,14 @@ public class FinalScoreActivity extends AppCompatActivity {
 
         // Get the user's name from the intent
         Intent intent = getIntent();
-        userName = intent.getStringExtra("userName");
+        name = intent.getStringExtra("name");
 
         // Get the final score from the intent
         int finalScore = intent.getIntExtra("finalScore", 0);
 
         // Set the score text view
         scoreTextView = findViewById(R.id.scoreTextView);
-        scoreTextView.setText("Congratulations " + userName + "! Your final score is " + finalScore);
+        scoreTextView.setText("Congratulations " + name + "! Your final score is " + finalScore);
 
         // Set up the take new quiz button
         takeNewQuizButton = findViewById(R.id.takeNewQuizButton);
@@ -36,8 +36,8 @@ public class FinalScoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Launch the main activity with the user's name as an extra
-                Intent intent = new Intent(FinalScoreActivity.this, MainActivity.class);
-                intent.putExtra("userName", userName);
+                Intent intent = new Intent(FinalScoreActivity.this, QuizActivity.class);
+                intent.putExtra("name", name);
                 startActivity(intent);
             }
         });
@@ -47,7 +47,9 @@ public class FinalScoreActivity extends AppCompatActivity {
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Close the app
+                // Clear the name
+                name = null;
+
                 finish();
             }
         });

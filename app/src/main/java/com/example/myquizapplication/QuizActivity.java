@@ -20,7 +20,7 @@ public class QuizActivity extends AppCompatActivity {
     private Button submitButton;
     private ProgressBar progressBar;
     private TextView progressTextView;
-    private String userName;
+    private String name;
 
     private Question[] questions;
     private int currentQuestionIndex = 0;
@@ -32,12 +32,13 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
         // Get the user's name from the intent
         Intent intent = getIntent();
-        userName = intent.getStringExtra("userName");
+        name = intent.getStringExtra("name");
         // Initialize questions array
         questions = new Question[]{
                 new Question("What is the capital of France?", new String[]{"Paris", "Berlin", "Rome"}, 0),
                 new Question("What is the largest planet in our solar system?", new String[]{"Jupiter", "Saturn", "Uranus"}, 0),
-                new Question("What is the tallest mountain in the world?", new String[]{"Mount Everest", "K2", "Lhotse"}, 0)
+                new Question("What is the tallest mountain in the world?", new String[]{"Mount Everest", "K2", "Lhotse"}, 0),
+                new Question("Which method initializes the UI components in Android Activity?", new String[]{"onCreate()", "onStart()", "onResume()"}, 0)
         };
 
 // Initialize views
@@ -169,15 +170,13 @@ public class QuizActivity extends AppCompatActivity {
                     break;
             }
         }
-
+        // Initialize progress bar
+        ProgressBar progressBar = findViewById(R.id.progress_bar);
+        progressBar.setMax(questions.length);
         // Disable the option buttons
         option1.setEnabled(false);
         option2.setEnabled(false);
         option3.setEnabled(false);
-
-        // Update progress bar
-        int progress = (int) ((float) (currentQuestionIndex + 1) / questions.length * 100);
-        progressBar.setProgress(progress);
 
         // Change the text and behavior of the submit button
         if (currentQuestionIndex == questions.length - 1) {
@@ -189,7 +188,7 @@ public class QuizActivity extends AppCompatActivity {
                     // Launch FinalScoreActivity and pass the final score and user name as extras
                     Intent intent = new Intent(QuizActivity.this, FinalScoreActivity.class);
                     intent.putExtra("finalScore", numCorrectAnswers);
-                    intent.putExtra("userName", userName);
+                    intent.putExtra("name", name);
                     startActivity(intent);
                     finish();
                 }
@@ -209,7 +208,9 @@ public class QuizActivity extends AppCompatActivity {
                     // Show the next question
                     showQuestion(currentQuestionIndex);
                     // Update progress bar
-                    progressBar.setProgress((currentQuestionIndex + 1) * 100 / questions.length);
+                    progressBar.setProgress(currentQuestionIndex + 1);
+                    progressBar.setMax(questions.length);
+
                     // Reset the button color and text
                     resetUI();
                 }
