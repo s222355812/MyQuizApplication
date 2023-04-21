@@ -36,11 +36,14 @@ public class FinalScoreActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Launch the main activity with the user's name as an extra
-                Intent intent = new Intent(FinalScoreActivity.this, QuizActivity.class);
+                Intent intent = new Intent(FinalScoreActivity.this, MainActivity.class);
                 intent.putExtra("name", name);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
+                finish();
             }
         });
+
 
         // Set up the finish button
         finishButton = findViewById(R.id.finishButton);
@@ -49,9 +52,16 @@ public class FinalScoreActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Clear the name
                 name = null;
-
+                // Clear the name from the UI
+                scoreTextView.setText("");
+                // Close the app
+                Intent intent = new Intent(Intent.ACTION_MAIN);
+                intent.addCategory(Intent.CATEGORY_HOME);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
                 finish();
             }
         });
     }
 }
+
